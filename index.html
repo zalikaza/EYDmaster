@@ -221,6 +221,15 @@
             transition: all 0.2s ease;
             font-weight: 500;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .category-option svg {
+            width: 18px;
+            height: 18px;
         }
 
         .category-checkbox:checked + .category-option {
@@ -228,6 +237,10 @@
             color: white;
             border-color: #8fb284;
             transform: scale(1.02);
+        }
+
+        .category-checkbox:checked + .category-option svg {
+            stroke: white;
         }
 
         .question-number {
@@ -477,6 +490,202 @@
             opacity: 0.9;
         }
 
+        .share-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e8efe4;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .share-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #a8c49c 0%, #8fb284 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(143, 178, 132, 0.4);
+        }
+
+        .share-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .preview-card {
+            background: url('') center/cover, linear-gradient(135deg, rgba(168, 196, 156, 0.95) 0%, rgba(143, 178, 132, 0.95) 100%);
+            background-blend-mode: overlay;
+            border-radius: 16px;
+            padding: 40px 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 30px rgba(143, 178, 132, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-card::before {
+            content: '✨';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 2em;
+            opacity: 0.6;
+        }
+
+        .preview-card::after {
+            content: '🌟';
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 2em;
+            opacity: 0.6;
+        }
+
+        .preview-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2em;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .preview-stats {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .preview-accuracy {
+            font-size: 3.5em;
+            font-weight: 700;
+            font-family: 'Crimson Pro', serif;
+            color: #4a6344;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .preview-subtitle {
+            font-size: 1.1em;
+            color: #5a7050;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .preview-details {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            font-size: 0.9em;
+        }
+
+        .preview-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #5a7050;
+            font-weight: 500;
+        }
+
+        .preview-message {
+            color: white;
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-url {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9em;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #a8c49c 0%, #8fb284 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(143, 178, 132, 0.4);
+        }
+
+        .download-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .close-modal {
+            background: #f5f9f3;
+            border: 2px solid #d4e2cc;
+            color: #5a7050;
+            margin-top: 12px;
+        }
+
+        .close-modal:hover {
+            background: #e8f0e4;
+        }
+
         .creator-card {
             background: white;
             border-radius: 12px;
@@ -594,22 +803,32 @@
 
         <div class="main-content">
             <div class="quiz-panel">
-                
-
                 <div class="category-selector">
                     <label class="category-label">Pilih Kategori Soal</label>
                     <div class="category-grid">
                         <input type="checkbox" id="cat1" class="category-checkbox" checked>
-                        <label for="cat1" class="category-option">📌 Tanda Baca</label>
+                        <label for="cat1" class="category-option">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                            Tanda Baca
+                        </label>
 
                         <input type="checkbox" id="cat2" class="category-checkbox" checked>
-                        <label for="cat2" class="category-option">🔤 Kapital</label>
+                        <label for="cat2" class="category-option">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 16 4 4 4-4"></path><path d="M7 20V4"></path><path d="M11 4h10"></path><path d="M11 8h7"></path><path d="M11 12h4"></path></svg>
+                            Kapital
+                        </label>
 
                         <input type="checkbox" id="cat3" class="category-checkbox" checked>
-                        <label for="cat3" class="category-option">✍️ Penulisan Kata</label>
+                        <label for="cat3" class="category-option">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                            Penulisan Kata
+                        </label>
 
                         <input type="checkbox" id="cat4" class="category-checkbox" checked>
-                        <label for="cat4" class="category-option">📖 Kata Baku</label>
+                        <label for="cat4" class="category-option">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                            Kata Baku
+                        </label>
                     </div>
                 </div>
 
@@ -655,6 +874,13 @@
                     <div class="accuracy-label">Akurasi</div>
                 </div>
 
+                <div class="share-card">
+                    <button class="share-btn" id="shareBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                        Share Hasil
+                    </button>
+                </div>
+
                 <div class="creator-card">
                     <div class="creator-title">Made with ❤︎</div>
                     <div class="creator-name">
@@ -690,9 +916,49 @@
         </div>
     </div>
 
+    <!-- Modal Share -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <div class="preview-card" id="previewCard">
+                <div class="preview-title">EYD Master</div>
+                <div class="preview-stats">
+                    <div class="preview-accuracy" id="previewAccuracy">0%</div>
+                    <div class="preview-subtitle">Akurasi</div>
+                    <div class="preview-details">
+                        <div class="preview-detail-item">
+                            <span>✓</span>
+                            <span id="previewCorrect">0</span>
+                            <span>Benar</span>
+                        </div>
+                        <div class="preview-detail-item">
+                            <span>✗</span>
+                            <span id="previewWrong">0</span>
+                            <span>Salah</span>
+                        </div>
+                        <div class="preview-detail-item">
+                            <span>📝</span>
+                            <span id="previewTotal">0</span>
+                            <span>Soal</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="preview-message" id="previewMessage">
+                    Aku dapat 0% akurasi di 0 soal EYD Master! Ayo coba~
+                </div>
+                <div class="preview-url">zalikaza.github.io/EYDmaster</div>
+            </div>
+            <button class="download-btn" id="downloadBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Simpan Gambar
+            </button>
+            <button class="download-btn close-modal" id="closeModal">Tutup</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         const questions = {
-         tandaBaca: [
+          tandaBaca: [
                  // 1-10: Kata Dasar (Gabungan Kata/Kata Majemuk)
                  { correct: 'Kami mengunjungi rumah sakit.', wrong: 'Kami mengunjungi rumahsakit.', explanation: 'Gabungan kata dasar (majemuk) ditulis terpisah.' },
                  { correct: 'Ia adalah tanggung jawab kami.', wrong: 'Ia adalah tanggungjawab kami.', explanation: 'Gabungan kata dasar yang bukan idiom ditulis terpisah.' },
@@ -1767,6 +2033,11 @@
         let questionCount = 0;
         let currentCorrectAnswer = '';
         let currentExplanation = '';
+        let audioPlayed = false;
+
+        // Audio elements
+        const correctAudio = new Audio('benar.mp3');
+        const wrongAudio = new Audio('salah.mp3');
 
         function getSelectedCategories() {
             const selected = [];
@@ -1813,6 +2084,7 @@
             document.getElementById('optionB').className = 'option-btn';
             document.getElementById('feedbackResult').textContent = '';
             document.getElementById('feedbackExplanation').style.display = 'none';
+            audioPlayed = false;
         }
 
         function checkAnswer(selected) {
@@ -1830,11 +2102,25 @@
                 selectedBtn.classList.add('correct');
                 correctCount++;
                 feedbackResult.innerHTML = `<strong style="color: #5a8051;">✓ Betul! ദ്ദി(˵ •̀ ᴗ - ˵ ) ✨</strong>`;
+                
+                // Play correct audio
+                if (!audioPlayed) {
+                    correctAudio.currentTime = 0;
+                    correctAudio.play().catch(err => console.log('Audio play failed:', err));
+                    audioPlayed = true;
+                }
             } else {
                 selectedBtn.classList.add('wrong');
                 correctBtn.classList.add('correct');
                 wrongCount++;
                 feedbackResult.innerHTML = `<strong style="color: #a85858;">✗ Salah! ( ꩜ ᯅ ꩜;)⁭ ⁭</strong> Jawaban yang benar adalah opsi ${currentCorrectAnswer}.`;
+                
+                // Play wrong audio
+                if (!audioPlayed) {
+                    wrongAudio.currentTime = 0;
+                    wrongAudio.play().catch(err => console.log('Audio play failed:', err));
+                    audioPlayed = true;
+                }
             }
 
             explanationText.textContent = currentExplanation;
@@ -1866,6 +2152,65 @@
             checkbox.addEventListener('change', () => {
                 loadQuestion();
             });
+        });
+
+        // Share functionality
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            const total = correctCount + wrongCount;
+            const accuracy = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+            
+            document.getElementById('previewAccuracy').textContent = accuracy + '%';
+            document.getElementById('previewCorrect').textContent = correctCount;
+            document.getElementById('previewWrong').textContent = wrongCount;
+            document.getElementById('previewTotal').textContent = total;
+            document.getElementById('previewMessage').textContent = `Aku dapat ${accuracy}% akurasi di ${total} soal EYD Master! Ayo coba~`;
+            
+            document.getElementById('shareModal').classList.add('active');
+        });
+
+        document.getElementById('closeModal').addEventListener('click', () => {
+            document.getElementById('shareModal').classList.remove('active');
+        });
+
+        document.getElementById('shareModal').addEventListener('click', (e) => {
+            if (e.target.id === 'shareModal') {
+                document.getElementById('shareModal').classList.remove('active');
+            }
+        });
+
+        document.getElementById('downloadBtn').addEventListener('click', async () => {
+            const previewCard = document.getElementById('previewCard');
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            downloadBtn.textContent = 'Membuat gambar...';
+            downloadBtn.disabled = true;
+            
+            try {
+                const canvas = await html2canvas(previewCard, {
+                    backgroundColor: null,
+                    scale: 2,
+                    logging: false
+                });
+                
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    const total = correctCount + wrongCount;
+                    const accuracy = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+                    link.download = `EYD-Master-${accuracy}%-${total}-soal.png`;
+                    link.href = url;
+                    link.click();
+                    URL.revokeObjectURL(url);
+                    
+                    downloadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Simpan Gambar`;
+                    downloadBtn.disabled = false;
+                });
+            } catch (error) {
+                console.error('Error generating image:', error);
+                downloadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Simpan Gambar`;
+                downloadBtn.disabled = false;
+                alert('Terjadi kesalahan saat membuat gambar. Silakan coba lagi.');
+            }
         });
 
         loadQuestion();
