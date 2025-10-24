@@ -566,7 +566,7 @@
         }
 
         .preview-card::before {
-            content: '✨';
+            content: '';
             position: absolute;
             top: 15px;
             left: 20px;
@@ -575,7 +575,7 @@
         }
 
         .preview-card::after {
-            content: '🌟';
+            content: '';
             position: absolute;
             bottom: 15px;
             right: 20px;
@@ -622,13 +622,44 @@
             font-size: 0.9em;
         }
 
-        .preview-detail-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #5a7050;
-            font-weight: 500;
-        }
+.preview-stats {
+    /* Tambahkan atau pastikan elemen induk ini terpusat, jika diperlukan */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Untuk menengahkan grup statistik di dalam kartunya */
+}
+
+.preview-details {
+    /* 1. Aktifkan Grid Layout */
+    display: grid;
+    
+    /* 2. Definisikan 2 kolom dengan lebar yang sama */
+    grid-template-columns: 1fr 1fr;
+    
+    /* 3. Atur jarak antar item */
+    gap: 15px 20px; /* Jarak baris 15px, jarak kolom 20px */
+    
+    /* Agar area .preview-details tidak terlalu lebar */
+    max-width: 250px; 
+}
+
+/* Item detail Soal adalah item ke-3 (nth-child(3)) */
+.preview-detail-item:nth-child(3) {
+    /* 4. Perintahkan item ke-3 untuk membentang dari kolom 1 hingga 3 (mencakup kedua kolom) */
+    grid-column: 1 / 3;
+    
+    /* 5. Pusatkan konten di tengah jika membentang penuh */
+    justify-content: center;
+}
+
+/* Pertahankan style default-mu untuk konten di dalam item */
+.preview-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #5a7050;
+    font-weight: 500;
+}
 
         .preview-message {
             color: white;
@@ -926,17 +957,17 @@
                     <div class="preview-subtitle">Akurasi</div>
                     <div class="preview-details">
                         <div class="preview-detail-item">
-                            <span>✓</span>
+                            <span>✅</span>
                             <span id="previewCorrect">0</span>
                             <span>Benar</span>
                         </div>
                         <div class="preview-detail-item">
-                            <span>✗</span>
+                            <span>❌</span>
                             <span id="previewWrong">0</span>
                             <span>Salah</span>
                         </div>
                         <div class="preview-detail-item">
-                            <span>📝</span>
+                            <span></span>
                             <span id="previewTotal">0</span>
                             <span>Soal</span>
                         </div>
@@ -2217,4 +2248,3 @@
     </script>
 </body>
 </html>
-
