@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EYD Master</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8faf6;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(168, 196, 156, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -30%;
+            left: -30%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(144, 178, 132, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #a8c49c 0%, #8fb284 100%);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(143, 178, 132, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '🍀';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 2em;
+            opacity: 0.3;
+        }
+
+        .header::after {
+            content: '🌿';
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 2em;
+            opacity: 0.3;
+        }
+
+        h1 {
+            font-family: 'Crimson Pro', serif;
+            color: #fff;
+            font-size: 3em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95em;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .quiz-panel {
+            background: #fff;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e8efe4;
+        }
+
+        .category-selector {
+            background: #f5f9f3;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            border-left: 4px solid #8fb284;
+        }
+
+        .category-label {
+            display: block;
+            color: #4a6344;
+            font-weight: 600;
+            margin-bottom: 14px;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .category-checkbox {
+            display: none;
+        }
+
+        .category-option {
+            padding: 10px 14px;
+            background: white;
+            border: 2px solid #d4e2cc;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            color: #5a7050;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .category-checkbox:checked + .category-option {
+            background: #8fb284;
+            color: white;
+            border-color: #8fb284;
+            transform: scale(1.02);
+        }
+
+        .question-number {
+            color: #8fb284;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question-number::before {
+            content: '';
+            width: 30px;
+            height: 2px;
+            background: #8fb284;
+        }
+
+        .instruction {
+            color: #4a6344;
+            margin-bottom: 24px;
+            font-size: 1.05em;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .option-btn {
+            padding: 18px 24px;
+            background: #fafcf9;
+            border: 2px solid #d4e2cc;
+            border-radius: 10px;
+            font-size: 1em;
+            color: #3d5237;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            text-align: left;
+            position: relative;
+            line-height: 1.5;
+        }
+
+        .option-btn::before {
+            content: attr(data-label);
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            background: #8fb284;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9em;
+            box-shadow: 0 2px 8px rgba(143, 178, 132, 0.3);
+        }
+
+        .option-btn:hover:not(.correct):not(.wrong) {
+            background: #f0f6ed;
+            border-color: #8fb284;
+            transform: translateX(4px);
+        }
+
+        .option-btn.correct {
+            background: #e8f5e4;
+            border-color: #7fa873;
+            animation: correctPulse 0.5s ease;
+        }
+
+        .option-btn.correct::before {
+            content: '✓';
+            background: #7fa873;
+        }
+
+        .option-btn.wrong {
+            background: #fce8e8;
+            border-color: #d88888;
+            animation: wrongShake 0.5s ease;
+        }
+
+        .option-btn.wrong::before {
+            content: '✗';
+            background: #d88888;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        .feedback-panel {
+            background: #f5f9f3;
+            border-left: 4px solid #c4d8ba;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .feedback-result {
+            font-weight: 600;
+            font-size: 1.05em;
+            color: #4a6344;
+            margin-bottom: 12px;
+        }
+
+        .feedback-explanation {
+            font-size: 0.92em;
+            color: #5a7050;
+            line-height: 1.6;
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        .explanation-title {
+            font-weight: 600;
+            color: #4a6344;
+            margin-bottom: 6px;
+            font-size: 0.9em;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 20px;
+        }
+
+        .score-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e8efe4;
+            margin-bottom: 16px;
+        }
+
+        .score-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.4em;
+            color: #4a6344;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .score-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .score-correct {
+            background: linear-gradient(135deg, #e8f5e4 0%, #d9edd3 100%);
+            border: 2px solid #c4deba;
+        }
+
+        .score-wrong {
+            background: linear-gradient(135deg, #fce8e8 0%, #f5d9d9 100%);
+            border: 2px solid #e8c4c4;
+        }
+
+        .score-label {
+            font-weight: 600;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .score-correct .score-label {
+            color: #5a8051;
+        }
+
+        .score-wrong .score-label {
+            color: #a85858;
+        }
+
+        .score-number {
+            font-size: 1.8em;
+            font-weight: 700;
+            font-family: 'Crimson Pro', serif;
+        }
+
+        .score-correct .score-number {
+            color: #5a8051;
+        }
+
+        .score-wrong .score-number {
+            color: #a85858;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #a8c49c 0%, #8fb284 100%);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .accuracy {
+            font-size: 2.5em;
+            font-weight: 700;
+            font-family: 'Crimson Pro', serif;
+            margin-bottom: 4px;
+        }
+
+        .accuracy-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>EYD Master</h1>
+            <div class="subtitle">Made with ❤︎, khairazalika</div>
+        </div>
+
+        <div class="main-content">
+            <div class="quiz-panel">
+                <div class="category-selector">
+                    <label class="category-label">Kategori Soal</label>
+                    <div class="category-grid">
+                        <input type="checkbox" id="cat1" class="category-checkbox" checked>
+                        <label for="cat1" class="category-option">📌 Tanda Baca</label>
+
+                        <input type="checkbox" id="cat2" class="category-checkbox" checked>
+                        <label for="cat2" class="category-option">🔤 Kapital</label>
+
+                        <input type="checkbox" id="cat3" class="category-checkbox" checked>
+                        <label for="cat3" class="category-option">✍️ Penulisan Kata</label>
+
+                        <input type="checkbox" id="cat4" class="category-checkbox" checked>
+                        <label for="cat4" class="category-option">📖 Kata Baku</label>
+                    </div>
+                </div>
+
+                <div class="question-number" id="questionNum">SOAL #1</div>
+                <p class="instruction">Pilih kalimat atau kata yang benar sesuai EYD ya!</p>
+
+                <div class="options">
+                    <button class="option-btn" id="optionA" data-label="A"></button>
+                    <button class="option-btn" id="optionB" data-label="B"></button>
+                </div>
+
+                <div class="feedback-panel" id="feedbackPanel">
+                    <div class="feedback-result" id="feedbackResult"></div>
+                    <div class="feedback-explanation" id="feedbackExplanation" style="display: none;">
+                        <div class="explanation-title">Penjelasan:</div>
+                        <div id="explanationText"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="score-card">
+                    <div class="score-title">Skor Kamu</div>
+                    <div class="score-item score-correct">
+                        <div class="score-label">
+                            <span>✓</span>
+                            <span>Benar</span>
+                        </div>
+                        <div class="score-number" id="correctScore">0</div>
+                    </div>
+                    <div class="score-item score-wrong">
+                        <div class="score-label">
+                            <span>✗</span>
+                            <span>Salah</span>
+                        </div>
+                        <div class="score-number" id="wrongScore">0</div>
+                    </div>
+                </div>
+
+                <div class="stats-card">
+                    <div class="accuracy" id="accuracy">0%</div>
+                    <div class="accuracy-label">Akurasi</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = {
+         tandaBaca: [
+                // 1-25: Koma dalam Kalimat Majemuk Setara (tetapi, melainkan, sedangkan)
+                { correct: 'Dia kaya, tetapi pelit.', wrong: 'Dia kaya tetapi pelit.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Ini bukan mobil, melainkan truk.', wrong: 'Ini bukan mobil melainkan truk.', explanation: 'Koma dipakai sebelum "melainkan".' },
+                { correct: 'Ayah membaca, sedangkan Ibu memasak.', wrong: 'Ayah membaca sedangkan Ibu memasak.', explanation: 'Koma dipakai sebelum "sedangkan".' },
+                { correct: 'Dia pandai, tetapi kurang rajin.', wrong: 'Dia pandai tetapi kurang rajin.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Bukan saya, melainkan adik saya.', wrong: 'Bukan saya melainkan adik saya.', explanation: 'Koma dipakai sebelum "melainkan".' },
+                { correct: 'Dia sudah janji, tetapi lupa.', wrong: 'Dia sudah janji tetapi lupa.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Pekerjaan berat, sedangkan upah kecil.', wrong: 'Pekerjaan berat sedangkan upah kecil.', explanation: 'Koma dipakai sebelum "sedangkan".' },
+                { correct: 'Ini bukan salahmu, melainkan salahku.', wrong: 'Ini bukan salahmu melainkan salahku.', explanation: 'Koma dipakai sebelum "melainkan".' },
+                { correct: 'Badan sehat, tetapi pikiran kacau.', wrong: 'Badan sehat tetapi pikiran kacau.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Saya datang, tetapi kamu pergi.', wrong: 'Saya datang tetapi kamu pergi.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Dia berjanji, tetapi ingkar.', wrong: 'Dia berjanji tetapi ingkar.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Ini bukan tipuan, melainkan kenyataan.', wrong: 'Ini bukan tipuan melainkan kenyataan.', explanation: 'Koma dipakai sebelum "melainkan".' },
+                { correct: 'Dia tertawa, sedangkan kami diam.', wrong: 'Dia tertawa sedangkan kami diam.', explanation: 'Koma dipakai sebelum "sedangkan".' },
+                { correct: 'Dia mampu, tetapi enggan mencoba.', wrong: 'Dia mampu tetapi enggan mencoba.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Bukan emas, melainkan kuningan.', wrong: 'Bukan emas melainkan kuningan.', explanation: 'Koma dipakai sebelum "melainkan".' },
+                { correct: 'Saya setuju, tetapi harus revisi.', wrong: 'Saya setuju tetapi harus revisi.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Kepala pusing, sedangkan perut lapar.', wrong: 'Kepala pusing sedangkan perut lapar.', explanation: 'Koma dipakai sebelum "sedangkan".' },
+                { correct: 'Bukan air, melainkan teh panas.', wrong: 'Bukan air melainkan teh panas.', explanation: 'Koma dipakai sebelum "melainkan".' },
+                { correct: 'Mesin baru, tetapi sering macet.', wrong: 'Mesin baru tetapi sering macet.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Kamu tidur, sedangkan saya jaga.', wrong: 'Kamu tidur sedangkan saya jaga.', explanation: 'Koma dipakai sebelum "sedangkan".' },
+                { correct: 'Dia ingin, tetapi tak berani.', wrong: 'Dia ingin tetapi tak berani.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Bukan dia, melainkan kakaknya.', wrong: 'Bukan dia melainkan kakaknya.', explanation: 'Koma dipakai sebelum "melainkan".' },
+                { correct: 'Bajunya mahal, tetapi warnanya kusam.', wrong: 'Bajunya mahal tetapi warnanya kusam.', explanation: 'Koma dipakai sebelum "tetapi".' },
+                { correct: 'Dia sakit, sedangkan adiknya sehat.', wrong: 'Dia sakit sedangkan adiknya sehat.', explanation: 'Koma dipakai sebelum "sedangkan".' },
+                { correct: 'Ini janji, tetapi tanpa ikatan.', wrong: 'Ini janji tetapi tanpa ikatan.', explanation: 'Koma dipakai sebelum "tetapi".' },
+
+                // 26-50: Koma Anak Kalimat Mendahului Induk Kalimat (jika, karena, meskipun, setelah, dll.)
+                { correct: 'Jika hujan, kami batal pergi.', wrong: 'Jika hujan kami batal pergi.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Karena sibuk, dia lupa makan.', wrong: 'Karena sibuk dia lupa makan.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Meskipun mahal, dia tetap beli.', wrong: 'Meskipun mahal dia tetap beli.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Setelah lulus, dia bekerja.', wrong: 'Setelah lulus dia bekerja.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Walaupun lelah, dia tersenyum.', wrong: 'Walaupun lelah dia tersenyum.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Apabila gagal, coba lagi.', wrong: 'Apabila gagal coba lagi.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Agar menang, kamu harus fokus.', wrong: 'Agar menang kamu harus fokus.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Sebelum berangkat, siapkan mental.', wrong: 'Sebelum berangkat siapkan mental.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Saat dipanggil, dia segera maju.', wrong: 'Saat dipanggil dia segera maju.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Sewaktu kecil, saya suka membaca.', wrong: 'Sewaktu kecil saya suka membaca.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Jika setuju, beri tanda tangan.', wrong: 'Jika setuju beri tanda tangan.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Karena sakit, dia izin pulang.', wrong: 'Karena sakit dia izin pulang.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Meskipun pintar, dia rendah hati.', wrong: 'Meskipun pintar dia rendah hati.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Setelah makan, dia mencuci piring.', wrong: 'Setelah makan dia mencuci piring.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Walaupun lambat, dia berhasil.', wrong: 'Walaupun lambat dia berhasil.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Apabila ada, tolong sampaikan.', wrong: 'Apabila ada tolong sampaikan.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Agar cepat, lakukan sekarang.', wrong: 'Agar cepat lakukan sekarang.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Sebelum tidur, pastikan kunci pintu.', wrong: 'Sebelum tidur pastikan kunci pintu.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Saat libur, kami ke pantai.', wrong: 'Saat libur kami ke pantai.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Sewaktu kuliah, dia sangat aktif.', wrong: 'Sewaktu kuliah dia sangat aktif.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Jika perlu, hubungi saja.', wrong: 'Jika perlu hubungi saja.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Karena macet, dia terlambat.', wrong: 'Karena macet dia terlambat.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Meskipun hujan, dia tetap datang.', wrong: 'Meskipun hujan dia tetap datang.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Setelah selesai, kumpulkan segera.', wrong: 'Setelah selesai kumpulkan segera.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+                { correct: 'Walaupun dilarang, dia tetap pergi.', wrong: 'Walaupun dilarang dia tetap pergi.', explanation: 'Koma dipakai jika anak kalimat mendahului induk kalimat.' },
+
+                // 51-75: Titik Dua untuk Perincian/Pemerian (Setelah pernyataan lengkap) & Kasus Tanpa Titik Dua
+                { correct: 'Mereka membawa: tenda, kompor, ransel.', wrong: 'Mereka membawa, tenda, kompor, ransel.', explanation: 'Titik dua digunakan untuk merinci setelah kata kerja (membawa).' },
+                { correct: 'Kita perlu: pulpen, pensil, penghapus.', wrong: 'Kita perlu, pulpen, pensil, penghapus.', explanation: 'Titik dua digunakan untuk merinci setelah kata kerja (perlu).' },
+                { correct: 'Alat tulis: buku, pena, penggaris.', wrong: 'Alat tulis, buku, pena, penggaris.', explanation: 'Titik dua digunakan setelah kata yang memerlukan pemerian.' },
+                { correct: 'Dia membeli: jeruk, apel, anggur.', wrong: 'Dia membeli, jeruk, apel, anggur.', explanation: 'Titik dua digunakan untuk merinci setelah kata kerja (membeli).' },
+                { correct: 'Syarat wajib: KTP, ijazah, pas foto.', wrong: 'Syarat wajib, KTP, ijazah, pas foto.', explanation: 'Titik dua digunakan setelah kata yang memerlukan pemerian.' },
+                { correct: 'Saya membeli buku, pulpen, dan penggaris.', wrong: 'Saya membeli: buku, pulpen, dan penggaris.', explanation: 'Titik dua TIDAK digunakan jika rincian menjadi objek dari kata kerja (membeli).' },
+                { correct: 'Tujuan utama adalah meraih juara.', wrong: 'Tujuan utama adalah: meraih juara.', explanation: 'Titik dua TIDAK digunakan setelah kata "adalah" atau "ialah".' },
+                { correct: 'Rapat dipimpin oleh: ketua, sekretaris.', wrong: 'Rapat dipimpin oleh: ketua, sekretaris.', explanation: 'Titik dua TIDAK digunakan setelah preposisi (oleh).' },
+                { correct: 'Dia membawa bekal: nasi, lauk, buah.', wrong: 'Dia membawa bekal, nasi, lauk, buah.', explanation: 'Titik dua digunakan untuk merinci setelah kata benda (bekal).' },
+                { correct: 'Peralatan memancing: joran, umpan.', wrong: 'Peralatan memancing, joran, umpan.', explanation: 'Titik dua digunakan setelah kata yang memerlukan pemerian.' },
+                { correct: 'Bahan-bahan: tepung, gula, telur.', wrong: 'Bahan-bahan, tepung, gula, telur.', explanation: 'Titik dua digunakan setelah kata yang memerlukan pemerian.' },
+                { correct: 'Dia menjual: baju, celana, sepatu.', wrong: 'Dia menjual, baju, celana, sepatu.', explanation: 'Titik dua digunakan untuk merinci setelah kata kerja (menjual).' },
+                { correct: 'Keputusannya: berhenti, pindah kota.', wrong: 'Keputusannya, berhenti, pindah kota.', explanation: 'Titik dua digunakan setelah kata yang memerlukan pemerian.' },
+                { correct: 'Adik makan nasi, telur, dan sosis.', wrong: 'Adik makan: nasi, telur, dan sosis.', explanation: 'Titik dua TIDAK digunakan jika rincian menjadi objek dari kata kerja (makan).' },
+                { correct: 'Barang yang dijual: buku, majalah.', wrong: 'Barang yang dijual, buku, majalah.', explanation: 'Titik dua digunakan setelah frasa (barang yang dijual).' },
+                { correct: 'Anggota tim: Rudi, Bima, Cika.', wrong: 'Anggota tim, Rudi, Bima, Cika.', explanation: 'Titik dua digunakan setelah kata yang memerlukan pemerian.' },
+                { correct: 'Saya suka warna merah, biru, dan hijau.', wrong: 'Saya suka: warna merah, biru, dan hijau.', explanation: 'Titik dua TIDAK digunakan jika rincian menjadi objek dari kata kerja (suka).' },
+                { correct: 'Mereka memerlukan: waktu, dana, tenaga.', wrong: 'Mereka memerlukan, waktu, dana, tenaga.', explanation: 'Titik dua digunakan untuk merinci setelah kata kerja (memerlukan).' },
+                { correct: 'Ayah membaca buku di kamar.', wrong: 'Ayah, membaca buku di kamar.', explanation: 'Koma TIDAK boleh memisahkan Subjek dan Predikat.' },
+                { correct: 'Hal itu terjadi karena dia ceroboh.', wrong: 'Hal itu terjadi, karena dia ceroboh.', explanation: 'Koma TIDAK digunakan jika induk kalimat mendahului anak kalimat.' },
+                { correct: 'Buku, pulpen, dan pensil tersedia.', wrong: 'Buku pulpen dan pensil tersedia.', explanation: 'Koma digunakan memisahkan unsur perincian.' },
+                { correct: 'Kita harus jujur, adil, dan berani.', wrong: 'Kita harus jujur adil dan berani.', explanation: 'Koma digunakan memisahkan unsur perincian.' },
+                { correct: 'Guru berkata, "Ayo, mulai belajar!"', wrong: 'Guru berkata "Ayo, mulai belajar!"', explanation: 'Koma digunakan sebelum kutipan langsung.' },
+                { correct: 'Bukan saya, melainkan dia yang salah.', wrong: 'Bukan saya melainkan dia yang salah.', explanation: 'Koma dipakai sebelum "melainkan".' },
+                { correct: 'Pada tahun 2024, banyak kasus baru.', wrong: 'Pada tahun 2024 banyak kasus baru.', explanation: 'Koma dipakai setelah keterangan waktu di awal kalimat.' },
+
+                // 76-100: Tanda Kutip, Koma Pengiring, dan Penutup
+                { correct: 'Dia bertanya, "Siapa namamu?"', wrong: 'Dia bertanya, "Siapa namamu"?', explanation: 'Tanda tanya harus di dalam tanda kutip.' },
+                { correct: 'Ibu berkata, "Jangan lupa makan!"', wrong: 'Ibu berkata, "Jangan lupa makan"!', explanation: 'Tanda seru harus di dalam tanda kutip.' },
+                { correct: '"Saya setuju," jawabnya singkat.', wrong: '"Saya setuju" jawabnya singkat.', explanation: 'Koma dan titik di dalam kutip sebelum pengiring.' },
+                { correct: '"Kapan kamu pulang?" tanyaku.', wrong: '"Kapan kamu pulang", tanyaku.', explanation: 'Tanda tanya di dalam kutip, dan tidak diikuti koma.' },
+                { correct: '"Tolong ambilkan," pintanya sopan.', wrong: '"Tolong ambilkan" pintanya sopan.', explanation: 'Koma di dalam kutip sebelum pengiring.' },
+                { correct: 'Polisi berteriak, "Berhenti!"', wrong: 'Polisi berteriak, "Berhenti"!', explanation: 'Tanda seru harus di dalam tanda kutip.' },
+                { correct: '"Benar," katanya, "saya sudah tahu."', wrong: '"Benar" katanya, "saya sudah tahu."', explanation: 'Koma di dalam kutip sebelum pengiring, dan koma setelah pengiring.' },
+                { correct: 'Petugas mengingatkan, "Hati-hati."', wrong: 'Petugas mengingatkan, "Hati-hati".', explanation: 'Tanda titik harus di dalam tanda kutip penutup.' },
+                { correct: '"Astaga!" serunya kaget.', wrong: '"Astaga"! serunya kaget.', explanation: 'Tanda seru harus di dalam tanda kutip, dan diikuti koma jika ada pengiring.' },
+                { correct: 'Ayah berpesan, "Jaga diri baik."', wrong: 'Ayah berpesan, "Jaga diri baik".', explanation: 'Tanda titik harus di dalam tanda kutip penutup.' },
+                { correct: '"Bagaimana kabarmu?" sapa temanku.', wrong: '"Bagaimana kabarmu", sapa temanku.', explanation: 'Tanda tanya di dalam kutip, dan tidak diikuti koma.' },
+                { correct: 'Adik merengek, "Mau es krim!"', wrong: 'Adik merengek, "Mau es krim"!', explanation: 'Tanda seru harus di dalam tanda kutip.' },
+                { correct: '"Ya," jawabnya, "saya akan ikut."', wrong: '"Ya" jawabnya, "saya akan ikut."', explanation: 'Koma di dalam kutip sebelum pengiring, dan koma setelah pengiring.' },
+                { correct: 'Guru berkata, "Kerjakan tugas ini."', wrong: 'Guru berkata, "Kerjakan tugas ini".', explanation: 'Tanda titik harus di dalam tanda kutip penutup.' },
+                { correct: '"Luar biasa!" puji para juri.', wrong: '"Luar biasa"! puji para juri.', explanation: 'Tanda seru harus di dalam tanda kutip, dan diikuti koma jika ada pengiring.' },
+                { correct: 'Dia menanyakan, "Sudah selesai?"', wrong: 'Dia menanyakan, "Sudah selesai"?', explanation: 'Tanda tanya harus di dalam tanda kutip.' },
+                { correct: '"Pergi!" usirnya dengan marah.', wrong: '"Pergi"! usirnya dengan marah.', explanation: 'Tanda seru harus di dalam tanda kutip.' },
+                { correct: '"Tunggu sebentar," kataku padanya.', wrong: '"Tunggu sebentar" kataku padanya.', explanation: 'Koma di dalam kutip sebelum pengiring.' },
+                { correct: 'Ibu memanggil, "Nak, cepat kemari!"', wrong: 'Ibu memanggil, "Nak, cepat kemari"!', explanation: 'Tanda seru harus di dalam tanda kutip.' },
+                { correct: '"Tentu," balasnya, "saya siap."', wrong: '"Tentu" balasnya, "saya siap."', explanation: 'Koma di dalam kutip sebelum pengiring, dan koma setelah pengiring.' },
+                { correct: '"Apa rencanamu?" bisiknya pelan.', wrong: '"Apa rencanamu", bisiknya pelan.', explanation: 'Tanda tanya di dalam kutip, dan tidak diikuti koma.' },
+                { correct: 'Ayah berkata, "Saya pulang besok."', wrong: 'Ayah berkata, "Saya pulang besok".', explanation: 'Tanda titik harus di dalam tanda kutip penutup.' },
+                { correct: '"Setuju!" teriak semua anggota.', wrong: '"Setuju"! teriak semua anggota.', explanation: 'Tanda seru harus di dalam tanda kutip.' },
+                { correct: '"Terima kasih," ujarku lega.', wrong: '"Terima kasih" ujarku lega.', explanation: 'Koma di dalam kutip sebelum pengiring.' },
+                { correct: 'Dia bertanya, "Mengapa diam saja?"', wrong: 'Dia bertanya, "Mengapa diam saja"?', explanation: 'Tanda tanya harus di dalam tanda kutip.' },
+            ],
+            kapitalisasi: [
+                // 1-10: Gelar dan Jabatan Resmi (Dengan/Tanpa Nama/Wilayah)
+                { correct: 'Presiden Joko Widodo berkunjung.', wrong: 'Presiden joko Widodo berkunjung.', explanation: 'Gelar jabatan diikuti nama orang ditulis huruf kapital.' },
+                { correct: 'Dia adalah seorang presiden.', wrong: 'Dia adalah seorang Presiden.', explanation: 'Jabatan sebagai kata jenis/umum ditulis huruf kecil.' },
+                { correct: 'Gubernur Bali terpilih hadir.', wrong: 'gubernur Bali terpilih hadir.', explanation: 'Jabatan diikuti nama wilayah ditulis huruf kapital.' },
+                { correct: 'Kami bertemu dengan gubernur.', wrong: 'Kami bertemu dengan Gubernur.', explanation: 'Jabatan sebagai kata jenis/umum ditulis huruf kecil.' },
+                { correct: 'Profesor Rini memimpin seminar.', wrong: 'profesor Rini memimpin seminar.', explanation: 'Gelar akademik diikuti nama orang ditulis huruf kapital.' },
+                { correct: 'Ia menjadi seorang profesor.', wrong: 'Ia menjadi seorang Profesor.', explanation: 'Gelar/pangkat sebagai kata jenis ditulis huruf kecil.' },
+                { correct: 'Kami mengundang Bapak Kepala Sekolah.', wrong: 'Kami mengundang Bapak kepala sekolah.', explanation: 'Jabatan ditulis kapital sebagai sapaan atau pengganti nama.' },
+                { correct: 'Kepala sekolah kami sangat bijak.', wrong: 'Kepala Sekolah kami sangat bijak.', explanation: 'Jabatan tidak diikuti nama/wilayah ditulis huruf kecil.' },
+                { correct: 'Menteri Keuangan merilis data baru.', wrong: 'menteri keuangan merilis data baru.', explanation: 'Jabatan menteri diikuti nama kementerian/bidang ditulis huruf kapital.' },
+                { correct: 'Kami menunggu kedatangan menteri.', wrong: 'Kami menunggu kedatangan Menteri.', explanation: 'Kata menteri sebagai kata jenis ditulis huruf kecil.' },
+
+                // 11-20: Hubungan Kekerabatan (Sebagai Sapaan/Ganti Nama vs. Kata Jenis)
+                { correct: 'Di mana Ibu sekarang?', wrong: 'Di mana ibu sekarang?', explanation: 'Kata kekerabatan (Ibu) ditulis kapital jika sebagai sapaan langsung/pengganti nama.' },
+                { correct: 'Dia adalah ibu saya.', wrong: 'Dia adalah Ibu saya.', explanation: 'Kata kekerabatan (ibu) ditulis kecil jika bukan sapaan atau ganti nama.' },
+                { correct: 'Surat ini ditujukan untuk Paman.', wrong: 'Surat ini ditujukan untuk paman.', explanation: 'Kata kekerabatan (Paman) ditulis kapital jika sebagai pengganti nama diri.' },
+                { correct: 'Dia adalah paman Budi.', wrong: 'Dia adalah Paman Budi.', explanation: 'Kata kekerabatan (paman) ditulis kecil jika diikuti nama diri dan bukan sapaan/pengganti nama.' },
+                { correct: 'Silakan, Nak, duduk di sini.', wrong: 'Silakan, nak, duduk di sini.', explanation: 'Kata kekerabatan (Nak) ditulis kapital sebagai sapaan langsung.' },
+                { correct: 'Kami punya tiga anak.', wrong: 'Kami punya tiga Anak.', explanation: 'Kata kekerabatan (anak) ditulis kecil sebagai kata jenis.' },
+                { correct: 'Mereka memanggilnya Kakak.', wrong: 'Mereka memanggilnya kakak.', explanation: 'Kata kekerabatan (Kakak) ditulis kapital sebagai ganti nama diri.' },
+                { correct: 'Apakah Adik sudah tidur?', wrong: 'Apakah adik sudah tidur?', explanation: 'Kata kekerabatan (Adik) ditulis kapital sebagai sapaan langsung/pengganti nama.' },
+                { correct: 'Semua nenek berkumpul di sini.', wrong: 'Semua Nenek berkumpul di sini.', explanation: 'Kata kekerabatan (nenek) dalam bentuk jamak umum ditulis kecil.' },
+                { correct: 'Kalian mau ke mana, Dik?', wrong: 'Kalian mau ke mana, dik?', explanation: 'Kata kekerabatan (Dik) ditulis kapital sebagai sapaan langsung.' },
+
+                // 21-30: Nama Geografi (Nama diri vs. Nama Jenis)
+                { correct: 'Kami berlibur ke Danau Toba.', wrong: 'Kami berlibur ke danau Toba.', explanation: 'Nama geografi (Danau Toba) ditulis kapital.' },
+                { correct: 'Saya suka berenang di danau.', wrong: 'Saya suka berenang di Danau.', explanation: 'Kata penunjuk jenis (danau) ditulis kecil jika bukan nama diri.' },
+                { correct: 'Mereka tinggal di Jalan Sudirman.', wrong: 'Mereka tinggal di jalan Sudirman.', explanation: 'Nama jalan (Jalan Sudirman) ditulis kapital.' },
+                { correct: 'Jalan itu sangat sepi.', wrong: 'Jalan itu sangat sepi.', explanation: 'Kata penunjuk jenis (jalan) ditulis kecil jika bukan nama diri.' },
+                { correct: 'Pelabuhan Merak sangat ramai.', wrong: 'Pelabuhan merak sangat ramai.', explanation: 'Nama geografi (Pelabuhan Merak) ditulis kapital.' },
+                { correct: 'Ada banyak pelabuhan di Indonesia.', wrong: 'Ada banyak Pelabuhan di Indonesia.', explanation: 'Kata penunjuk jenis (pelabuhan) ditulis kecil jika bukan nama diri.' },
+                { correct: 'Bumi berputar mengelilingi Matahari.', wrong: 'Bumi berputar mengelilingi matahari.', explanation: 'Nama geografi/astronomi (Matahari, Bumi) ditulis kapital sebagai nama diri.' },
+                { correct: 'Jarak antara bumi dan matahari jauh.', wrong: 'Jarak antara Bumi dan Matahari jauh.', explanation: 'Kata astronomi (bumi, matahari) ditulis kecil jika tidak digunakan sebagai nama diri.' },
+                { correct: 'Kami melewati Selat Sunda.', wrong: 'Kami melewati selat Sunda.', explanation: 'Nama geografi (Selat Sunda) ditulis kapital.' },
+                { correct: 'Selat itu sangat dalam.', wrong: 'Selat itu sangat dalam.', explanation: 'Kata penunjuk jenis (selat) ditulis kecil jika bukan nama diri.' },
+
+                // 31-40: Nama Bangsa, Suku, Bahasa, dan Tahun/Musim
+                { correct: 'Kami belajar Bahasa Inggris.', wrong: 'Kami belajar bahasa Inggris.', explanation: 'Nama bahasa (Inggris) ditulis kapital, tetapi kata "bahasa" jika bukan nama diri ditulis kecil.' },
+                { correct: 'Suku Badui terkenal gigih.', wrong: 'Suku badui terkenal gigih.', explanation: 'Nama suku (Badui) ditulis kapital, tetapi kata "suku" ditulis kecil.' },
+                { correct: 'Dia adalah warga negara Indonesia.', wrong: 'Dia adalah warga negara indonesia.', explanation: 'Nama bangsa, suku, dan bahasa ditulis kapital (Indonesia).' },
+                { correct: 'Dia menguasai bahasa Jawa.', wrong: 'Dia menguasai Bahasa Jawa.', explanation: 'Nama bahasa (Jawa) ditulis kapital.' },
+                { correct: 'Tahun Masehi berbeda dengan Hijriah.', wrong: 'Tahun masehi berbeda dengan hijriah.', explanation: 'Nama tahun, bulan, hari, hari raya, dan peristiwa sejarah ditulis kapital.' },
+                { correct: 'Dia lahir pada bulan Mei.', wrong: 'Dia lahir pada bulan mei.', explanation: 'Nama bulan (Mei) ditulis kapital.' },
+                { correct: 'Upacara diadakan setiap hari Senin.', wrong: 'Upacara diadakan setiap hari senin.', explanation: 'Nama hari (Senin) ditulis kapital.' },
+                { correct: 'Kami merayakan Hari Kemerdekaan.', wrong: 'Kami merayakan Hari kemerdekaan.', explanation: 'Nama hari raya/peristiwa (Kemerdekaan) ditulis kapital.' },
+                { correct: 'Kita memasuki musim hujan.', wrong: 'Kita memasuki Musim Hujan.', explanation: 'Nama musim (hujan) ditulis kecil.' },
+                { correct: 'Dia ahli bahasa Jepang.', wrong: 'Dia ahli Bahasa Jepang.', explanation: 'Nama bahasa (Jepang) ditulis kapital.' },
+
+                // 41-50: Unsur Nama Diri (Termasuk Partikel)
+                { correct: 'Tokoh itu bernama Sultan Hasanuddin.', wrong: 'Tokoh itu bernama sultan Hasanuddin.', explanation: 'Gelar raja/sultan diikuti nama ditulis kapital.' },
+                { correct: 'Kami membahas novel "Laskar Pelangi".', wrong: 'Kami membahas novel "laskar pelangi".', explanation: 'Setiap kata di judul (kecuali konjungsi/preposisi) ditulis kapital.' },
+                { correct: 'Buku itu berjudul "Dari Ave Maria ke Jalan Lain ke Roma".', wrong: 'Buku itu berjudul "Dari Ave Maria Ke Jalan Lain Ke Roma".', explanation: 'Kata partikel (ke, dari, di, dll.) dalam judul ditulis kecil, kecuali di awal.' },
+                { correct: 'Kami mendaki Gunung Semeru.', wrong: 'Kami mendaki gunung Semeru.', explanation: 'Kata penunjuk jenis (gunung) diikuti nama diri ditulis kapital.' },
+                { correct: 'Dia pergi ke Gunung.', wrong: 'Dia pergi ke gunung.', explanation: 'Kata penunjuk jenis (gunung) ditulis kecil jika bukan nama diri.' },
+                { correct: 'Bapak Ahmad memiliki gelar S.E.', wrong: 'Bapak Ahmad memiliki gelar S.e.', explanation: 'Singkatan gelar akademik ditulis kapital.' },
+                { correct: 'Dia adalah anak Bapak Budi.', wrong: 'Dia adalah anak bapak Budi.', explanation: 'Kata kekerabatan (Bapak) ditulis kapital sebagai sapaan/pengganti nama.' },
+                { correct: 'Kami mengunjungi Kota Surabaya.', wrong: 'Kami mengunjungi kota Surabaya.', explanation: 'Kata penunjuk jenis (kota) diikuti nama diri ditulis kapital.' },
+                { correct: 'Dia bekerja di perusahaan asing.', wrong: 'Dia bekerja di Perusahaan asing.', explanation: 'Kata jenis (perusahaan) ditulis kecil.' },
+                { correct: 'Mereka mempelajari sejarah Perang Dunia I.', wrong: 'Mereka mempelajari sejarah perang dunia I.', explanation: 'Nama peristiwa sejarah ditulis kapital.' },
+
+                // 51-60: Sapaan Keagamaan dan Panggilan Hormat
+                { correct: 'Semoga Tuhan memberkatimu.', wrong: 'Semoga tuhan memberkatimu.', explanation: 'Kata ganti Tuhan/Tuhan ditulis kapital.' },
+                { correct: 'Nabi Muhammad adalah rasul Allah Swt.', wrong: 'Nabi muhammad adalah rasul allah Swt.', explanation: 'Gelar/nama nabi dan nama Tuhan ditulis kapital.' },
+                { correct: 'Kami menyambut Yang Terhormat Bapak Ahmad.', wrong: 'Kami menyambut yang Terhormat Bapak Ahmad.', explanation: 'Sapaan/gelar kehormatan diikuti nama orang ditulis kapital.' },
+                { correct: 'Apakah Anda sudah makan?', wrong: 'Apakah anda sudah makan?', explanation: 'Kata ganti orang kedua (Anda) ditulis kapital.' },
+                { correct: 'Dia bertemu dengan Bapak di sana.', wrong: 'Dia bertemu dengan bapak di sana.', explanation: 'Kata kekerabatan (Bapak) ditulis kapital sebagai ganti nama diri.' },
+                { correct: 'Tolong sampaikan salam saya kepada Bapak.', wrong: 'Tolong sampaikan salam saya kepada bapak.', explanation: 'Kata kekerabatan (Bapak) ditulis kapital sebagai ganti nama diri.' },
+                { correct: 'Umat Islam merayakan Idulfitri.', wrong: 'Umat islam merayakan Idulfitri.', explanation: 'Nama agama, kitab suci, dan Tuhan ditulis kapital.' },
+                { correct: 'Kitab Suci Al-Qur’an dibaca setiap hari.', wrong: 'Kitab suci Al-Qur’an dibaca setiap hari.', explanation: 'Nama kitab suci ditulis kapital.' },
+                { correct: 'Semua agama mengajarkan kebaikan.', wrong: 'Semua Agama mengajarkan kebaikan.', explanation: 'Kata jenis (agama) ditulis kecil.' },
+                { correct: 'Mari kita menghadap Ilahi.', wrong: 'Mari kita menghadap ilahi.', explanation: 'Kata ganti Tuhan (Ilahi) ditulis kapital.' },
+
+                // 61-70: Nama Instansi, Badan, dan Dokumen
+                { correct: 'Dia bekerja di Kementerian Pendidikan.', wrong: 'Dia bekerja di kementerian Pendidikan.', explanation: 'Nama badan/lembaga resmi ditulis kapital.' },
+                { correct: 'Dia bekerja di sebuah kementerian.', wrong: 'Dia bekerja di sebuah Kementerian.', explanation: 'Kata jenis (kementerian) ditulis kecil.' },
+                { correct: 'Kami merujuk pada Undang-Undang Dasar 1945.', wrong: 'Kami merujuk pada undang-undang Dasar 1945.', explanation: 'Nama dokumen/undang-undang resmi ditulis kapital.' },
+                { correct: 'Kami membuat undang-undang baru.', wrong: 'Kami membuat Undang-Undang baru.', explanation: 'Kata jenis (undang-undang) ditulis kecil.' },
+                { correct: 'Bank Indonesia adalah bank sentral.', wrong: 'Bank indonesia adalah bank sentral.', explanation: 'Nama lembaga (Bank Indonesia) ditulis kapital.' },
+                { correct: 'Kami menabung di bank syariah.', wrong: 'Kami menabung di Bank Syariah.', explanation: 'Kata jenis (bank) ditulis kecil jika bukan nama diri.' },
+                { correct: 'Sekolah Menengah Atas (SMA) terletak di sana.', wrong: 'Sekolah menengah atas (sma) terletak di sana.', explanation: 'Nama resmi lembaga (Sekolah Menengah Atas) ditulis kapital.' },
+                { correct: 'Dia bersekolah di sekolah swasta.', wrong: 'Dia bersekolah di Sekolah Swasta.', explanation: 'Kata jenis (sekolah swasta) ditulis kecil.' },
+                { correct: 'Perusahaan Listrik Negara (PLN) beroperasi.', wrong: 'Perusahaan listrik negara (PLN) beroperasi.', explanation: 'Nama badan usaha (Perusahaan Listrik Negara) ditulis kapital.' },
+                { correct: 'Dia menyusun Surat Keputusan Rektor.', wrong: 'Dia menyusun surat Keputusan Rektor.', explanation: 'Nama dokumen/surat resmi ditulis kapital.' },
+
+                // 71-80: Akronim Nama Diri dan Partikel di Awal/Akhir
+                { correct: 'UNICEF adalah organisasi dunia.', wrong: 'Unicef adalah organisasi dunia.', explanation: 'Akronim nama diri ditulis kapital seluruhnya.' },
+                { correct: 'Dia menjadi staf ahli Menko PMK.', wrong: 'Dia menjadi staf ahli menko PMK.', explanation: 'Akronim nama jabatan resmi ditulis kapital.' },
+                { correct: 'Mereka berkunjung ke Jabar.', wrong: 'Mereka berkunjung ke jabar.', explanation: 'Singkatan nama geografi (Jabar) ditulis kapital.' },
+                { correct: 'Pajak Bumi dan Bangunan (PBB) dibayar.', wrong: 'Pajak bumi dan bangunan (pbb) dibayar.', explanation: 'Akronim/singkatan nama dokumen/pajak ditulis kapital.' },
+                { correct: 'Dia membaca "Dari Timur Matahari".', wrong: 'Dia membaca "dari timur matahari".', explanation: 'Kata partikel (dari) di awal judul ditulis kapital.' },
+                { correct: 'Buku itu di-review oleh para ahli.', wrong: 'Buku itu di-Review oleh para ahli.', explanation: 'Partikel di/ke/dari/dan/yang/untuk/pada di tengah judul ditulis kecil.' },
+                { correct: 'Siapa yang datang itu?', wrong: 'Siapa Yang datang itu?', explanation: 'Kata "yang" bukan di awal kalimat/judul ditulis kecil.' },
+                { correct: 'Baiklah, saya setuju untuk itu.', wrong: 'Baiklah, saya setuju Untuk itu.', explanation: 'Kata "untuk" bukan di awal kalimat/judul ditulis kecil.' },
+                { correct: 'Sejak kecil, ia sangat mandiri.', wrong: 'Sejak Kecil, ia sangat mandiri.', explanation: 'Kata keterangan (Sejak) di awal kalimat ditulis kapital.' },
+                { correct: 'Mereka berdiskusi mengenai hal ini.', wrong: 'Mereka berdiskusi Mengenai hal ini.', explanation: 'Kata "mengenai" bukan di awal kalimat/judul ditulis kecil.' },
+
+                // 81-100: Pengulangan dan Kasus Khusus Lain
+                { correct: 'Kami melewati Puncak Jaya.', wrong: 'Kami melewati puncak Jaya.', explanation: 'Kata penunjuk jenis (Puncak) diikuti nama diri ditulis kapital.' },
+                { correct: 'Kami melewati puncak gunung.', wrong: 'Kami melewati Puncak gunung.', explanation: 'Kata penunjuk jenis (puncak, gunung) ditulis kecil jika bukan nama diri.' },
+                { correct: 'Dia adalah Rektor Universitas Gadjah Mada.', wrong: 'Dia adalah rektor Universitas Gadjah Mada.', explanation: 'Jabatan diikuti nama instansi ditulis kapital.' },
+                { correct: 'Rektor memberikan sambutan.', wrong: 'rektor memberikan sambutan.', explanation: 'Jabatan di awal kalimat ditulis kapital.' },
+                { correct: 'Kami belajar tentang Zaman Batu.', wrong: 'Kami belajar tentang zaman Batu.', explanation: 'Nama zaman/masa sejarah ditulis kapital.' },
+                { correct: 'Kami sedang menunggu Ibu Tini.', wrong: 'Kami sedang menunggu ibu Tini.', explanation: 'Kata kekerabatan diikuti nama diri ditulis kapital.' },
+                { correct: 'Berapa harga jeruk ini, Bu?', wrong: 'Berapa harga jeruk ini, bu?', explanation: 'Kata kekerabatan (Bu) sebagai sapaan langsung ditulis kapital.' },
+                { correct: 'Keluarga Nabi Sulaiman sangat kaya.', wrong: 'Keluarga nabi Sulaiman sangat kaya.', explanation: 'Gelar keturunan/keagamaan (Nabi) diikuti nama ditulis kapital.' },
+                { correct: 'Dia adalah seorang nabi.', wrong: 'Dia adalah seorang Nabi.', explanation: 'Kata jenis (nabi) ditulis kecil.' },
+                { correct: 'Semua orang percaya pada-Nya.', wrong: 'Semua orang percaya pada-nya.', explanation: 'Huruf awal kata ganti Tuhan (-Nya) ditulis kapital.' },
+                { correct: 'Indonesia memiliki banyak suku.', wrong: 'Indonesia memiliki banyak Suku.', explanation: 'Kata jenis (suku) ditulis kecil.' },
+                { correct: 'Dia membaca "Catatan si Boy".', wrong: 'Dia membaca "Catatan Si Boy".', explanation: 'Partikel si/sang dalam judul/teks ditulis kecil, kecuali di awal.' },
+                { correct: 'Dia bertemu dengan Sang Saka Merah Putih.', wrong: 'Dia bertemu dengan sang Saka Merah Putih.', explanation: 'Partikel sang yang diikuti nama diri ditulis kapital (sebagai gelar kehormatan).' },
+                { correct: 'Dia bertemu dengan sang kancil.', wrong: 'Dia bertemu dengan Sang Kancil.', explanation: 'Partikel sang diikuti nama jenis (kancil) ditulis kecil.' },
+                { correct: 'Pemerintah Provinsi Jawa Tengah menetapkan aturan.', wrong: 'Pemerintah provinsi Jawa Tengah menetapkan aturan.', explanation: 'Nama instansi/wilayah (Provinsi) diikuti nama geografi ditulis kapital.' },
+                { correct: 'Dia menjabat sebagai sekretaris daerah.', wrong: 'Dia menjabat sebagai Sekretaris Daerah.', explanation: 'Jabatan non-struktural/sebutan umum ditulis kecil.' },
+                { correct: 'Pada Hari Jumat, dia libur.', wrong: 'Pada hari Jumat, dia libur.', explanation: 'Nama hari (Jumat) ditulis kapital.' },
+                { correct: 'Kami mempelajari Revolusi Prancis.', wrong: 'Kami mempelajari revolusi Prancis.', explanation: 'Nama peristiwa sejarah (Revolusi Prancis) ditulis kapital.' },
+                { correct: 'Mereka bekerja di kantor camat.', wrong: 'Mereka bekerja di kantor Camat.', explanation: 'Jabatan umum (camat) tidak diikuti nama diri ditulis kecil.' },
+                { correct: 'Kantor Bupati Bogor baru selesai direnovasi.', wrong: 'Kantor bupati Bogor baru selesai direnovasi.', explanation: 'Jabatan diikuti nama geografi ditulis kapital.' },
+            ],
+            penulisanKata: [
+                // 1-25: Kata Depan (di, ke) vs. Imbuhan (di-, ke-)
+                { correct: 'Dia makan di rumah sakit.', wrong: 'Dia makan dirumah sakit.', explanation: '"Di rumah" ditulis terpisah karena "di" adalah kata depan penunjuk tempat.' },
+                { correct: 'Buku itu dicetak tahun lalu.', wrong: 'Buku itu di cetak tahun lalu.', explanation: '"Dicetak" ditulis serangkai karena "di-" adalah imbuhan pasif.' },
+                { correct: 'Mereka akan ke luar negeri.', wrong: 'Mereka akan keluar negeri.', explanation: '"Ke luar" ditulis terpisah karena "ke" adalah kata depan penunjuk arah.' },
+                { correct: 'Dia berani keluar kamar.', wrong: 'Dia berani ke luar kamar.', explanation: '"Keluar" ditulis serangkai karena "keluar" adalah kata kerja/verba.' },
+                { correct: 'Semua barang disimpan di gudang.', wrong: 'Semua barang disimpan digudang.', explanation: '"Di gudang" ditulis terpisah karena "di" adalah kata depan penunjuk tempat.' },
+                { correct: 'Masalah ini dibicarakan besok.', wrong: 'Masalah ini di bicarakan besok.', explanation: '"Dibicarakan" ditulis serangkai karena "di-" adalah imbuhan pasif.' },
+                { correct: 'Kami pindah ke Bandung.', wrong: 'Kami pindah kebandung.', explanation: '"Ke Bandung" ditulis terpisah karena "ke" adalah kata depan penunjuk arah.' },
+                { correct: 'Perusahaan itu bangkrut.', wrong: 'Perusahaan itu kebangkrutan.', explanation: '"Bangkrut" ditulis terpisah (tidak ada kata "kebangkrutan" yang baku dalam konteks ini, lebih tepat ' },
+                { correct: 'Dia sedang di atas meja.', wrong: 'Dia sedang diatas meja.', explanation: '"Di atas" ditulis terpisah karena "di" adalah kata depan penunjuk tempat/posisi.' },
+                { correct: 'Dia menaiki kereta api.', wrong: 'Dia menaiki keretapi.', explanation: 'Kesalahan penulisan kata "kereta api".' },
+                { correct: 'Sampai di mana batasnya?', wrong: 'Sampai dimana batasnya?', explanation: '"Di mana" ditulis terpisah karena "di" adalah kata depan penunjuk tempat.' },
+                { correct: 'Dia pergi ke sekolah.', wrong: 'Dia pergi kesekolah.', explanation: '"Ke sekolah" ditulis terpisah karena "ke" adalah kata depan penunjuk arah.' },
+                { correct: 'Dia termasuk anak kesepuluh.', wrong: 'Dia termasuk anak ke sepuluh.', explanation: '"Kesepuluh" ditulis serangkai karena "ke-" adalah imbuhan bilangan bertingkat.' },
+                { correct: 'Kami ke sana kemarin.', wrong: 'Kami kesana kemarin.', explanation: '"Ke sana" ditulis terpisah karena "ke" adalah kata depan penunjuk arah.' },
+                { correct: 'Uang itu disimpan di bank.', wrong: 'Uang itu disimpan dibank.', explanation: '"Di bank" ditulis terpisah karena "di" adalah kata depan penunjuk tempat.' },
+                { correct: 'Buku ini sudah disampul.', wrong: 'Buku ini sudah di sampul.', explanation: '"Disampul" ditulis serangkai karena "di-" adalah imbuhan pasif.' },
+                { correct: 'Kami menuju ke timur.', wrong: 'Kami menuju ketimur.', explanation: '"Ke timur" ditulis terpisah karena "ke" adalah kata depan penunjuk arah.' },
+                { correct: 'Dia termasuk anak kedua.', wrong: 'Dia termasuk anak ke dua.', explanation: '"Kedua" ditulis serangkai karena "ke-" adalah imbuhan bilangan bertingkat.' },
+                { correct: 'Dia tersenyum di balik topeng.', wrong: 'Dia tersenyum dibalik topeng.', explanation: '"Di balik" ditulis terpisah karena "di" adalah kata depan penunjuk posisi.' },
+                { correct: 'Padi itu ditanam petani.', wrong: 'Padi itu di tanam petani.', explanation: '"Ditanam" ditulis serangkai karena "di-" adalah imbuhan pasif.' },
+                { correct: 'Kami kembali ke Jakarta.', wrong: 'Kami kembali kejakarta.', explanation: '"Ke Jakarta" ditulis terpisah karena "ke" adalah kata depan penunjuk arah.' },
+                { correct: 'Mereka pergi dari sini.', wrong: 'Mereka pergi darisini.', explanation: '"Dari sini" ditulis terpisah karena "dari" adalah kata depan penunjuk asal/tempat.' },
+                { correct: 'Kami datang ke sini.', wrong: 'Kami datang kesini.', explanation: '"Ke sini" ditulis terpisah karena "ke" adalah kata depan penunjuk arah.' },
+                { correct: 'Dia masuk ke dalam rumah.', wrong: 'Dia masuk kedalam rumah.', explanation: '"Ke dalam" ditulis terpisah karena "ke" adalah kata depan penunjuk arah.' },
+                { correct: 'Barang itu dikirimkan ke alamat ini.', wrong: 'Barang itu dikirimkan kealamat ini.', explanation: '"Ke alamat" ditulis terpisah karena "ke" adalah kata depan penunjuk arah/tujuan.' },
+
+                // 26-50: Partikel (-pun, -lah, -kah) dan Gabungan Kata
+                { correct: 'Apa pun yang diminta, dia beri.', wrong: 'Apapun yang diminta, dia beri.', explanation: 'Partikel "-pun" ditulis terpisah jika berarti "juga" atau menyatakan ketidaktentuan.' },
+                { correct: 'Dia adalah siapa pun yang kamu suka.', wrong: 'Dia adalah siapapun yang kamu suka.', explanation: 'Partikel "-pun" ditulis terpisah jika menyatakan ketidaktentuan.' },
+                { correct: 'Walaupun hujan, dia datang.', wrong: 'Walau pun hujan, dia datang.', explanation: 'Partikel "-pun" ditulis serangkai untuk kata hubung (meskipun/walaupun/ataupun/bagaimanapun).' },
+                { correct: 'Dia harus bertanggung jawab.', wrong: 'Dia harus bertanggungjawab.', explanation: '"Bertanggung jawab" ditulis terpisah sebagai kata majemuk (gabungan kata).' },
+                { correct: 'Dia menanda tangani surat itu.', wrong: 'Dia menandatangani surat itu.', explanation: '"Menanda tangani" ditulis terpisah karena kata majemuk dengan imbuhan di awal.' },
+                { correct: 'Beritahu saya sekarang juga!', wrong: 'Beri tahu saya sekarang juga!', explanation: '"Beritahu" ditulis serangkai karena sudah mengalami pengimbuhan kata majemuk.' },
+                { correct: 'Di mana pun kamu berada, aku rindu.', wrong: 'Dimana pun kamu berada, aku rindu.', explanation: '"Di mana pun" ditulis terpisah (kata depan + partikel).' },
+                { correct: 'Ambilkan buku itu.', wrong: 'Ambil kan buku itu.', explanation: 'Partikel "-kan" (sebagai imbuhan) ditulis serangkai.' },
+                { correct: 'Tanggung jawabmu besar sekali.', wrong: 'Tanggungjawabmu besar sekali.', explanation: '"Tanggung jawab" ditulis terpisah sebagai kata majemuk.' },
+                { correct: 'Kalau pun dia lari, dia takkan selamat.', wrong: 'Kalaupun dia lari, dia takkan selamat.', explanation: 'Partikel "-pun" ditulis terpisah jika masih bisa diganti "juga".' },
+                { correct: 'Adakah yang kamu tunggu?', wrong: 'Ada kah yang kamu tunggu?', explanation: 'Partikel "-kah" ditulis serangkai.' },
+                { correct: 'Bacalah buku ini.', wrong: 'Baca lah buku ini.', explanation: 'Partikel "-lah" ditulis serangkai.' },
+                { correct: 'Seolah-olah dia tak bersalah.', wrong: 'Seolah olah dia tak bersalah.', explanation: 'Kata ulang (olah-olah) harus menggunakan tanda hubung.' },
+                { correct: 'Kami bersuka cita atas kelulusannya.', wrong: 'Kami bersukacita atas kelulusannya.', explanation: '"Bersuka cita" ditulis terpisah sebagai kata majemuk.' },
+                { correct: 'Bagaimana pun, dia akan datang.', wrong: 'Bagaimanapun, dia akan datang.', explanation: '"Bagaimana pun" ditulis terpisah (kata dasar + partikel).' },
+                { correct: 'Dia makan nasi, lauk pauk, dan sayur.', wrong: 'Dia makan nasi, lauk-pauk, dan sayur.', explanation: '"Lauk pauk" ditulis terpisah (bukan kata ulang utuh/berimbuhan).' },
+                { correct: 'Beri tahu saya kabar itu.', wrong: 'Beritahu saya kabar itu.', explanation: '"Beri tahu" ditulis terpisah sebagai kata majemuk (gabungan kata kerja dan kata benda).' },
+                { correct: 'Baiklah, saya akan pergi.', wrong: 'Baik lah, saya akan pergi.', explanation: 'Partikel "-lah" ditulis serangkai.' },
+                { correct: 'Dia adalah seorang duta besar.', wrong: 'Dia adalah seorang dutabesar.', explanation: '"Duta besar" ditulis terpisah sebagai kata majemuk.' },
+                { correct: 'Kapan pun dia mau, dia bisa.', wrong: 'Kapanpun dia mau, dia bisa.', explanation: 'Partikel "-pun" ditulis terpisah (kata dasar + partikel).' },
+                { correct: 'Ia mempertanggungjawabkan perbuatannya.', wrong: 'Ia mempertanggung jawabkan perbuatannya.', explanation: 'Kata majemuk (tanggung jawab) mendapat imbuhan serangkai (memper-kan).' },
+                { correct: 'Seandainya saya kaya, saya akan bantu.', wrong: 'Seandai nya saya kaya, saya akan bantu.', explanation: 'Partikel "-nya" ditulis serangkai.' },
+                { correct: 'Dia memiliki mata uang asing.', wrong: 'Dia memiliki matauang asing.', explanation: '"Mata uang" ditulis terpisah sebagai kata majemuk.' },
+                { correct: 'Terima kasih atas hadirnya.', wrong: 'Terimakasih atas hadirnya.', explanation: '"Terima kasih" ditulis terpisah sebagai kata majemuk.' },
+                { correct: 'Kerja sama itu berhasil.', wrong: 'Kerjasama itu berhasil.', explanation: '"Kerja sama" ditulis terpisah sebagai kata majemuk.' },
+
+                // 51-75: Kata ulang, Gabungan Kata yang Sudah Padu (sering salah), dan Partikel Penguat
+                { correct: 'Warna mobilnya merah kebiru-biruan.', wrong: 'Warna mobilnya merah kebirubiruan.', explanation: 'Kata ulang berimbuhan (kebiru-biruan) menggunakan tanda hubung.' },
+                { correct: 'Kami berulang tahun hari ini.', wrong: 'Kami berulangtahun hari ini.', explanation: '"Berulang tahun" ditulis terpisah sebagai kata majemuk.' },
+                { correct: 'Mereka bergotong royong membersihkan.', wrong: 'Mereka bergotongroyong membersihkan.', explanation: '"Bergotong royong" ditulis terpisah sebagai kata majemuk.' },
+                { correct: 'Bagaimanapun, itu salahnya.', wrong: 'Bagaimana pun, itu salahnya.', explanation: '"Bagaimanapun" ditulis serangkai karena berfungsi sebagai kata hubung (konjungsi).' },
+                { correct: 'Telah tersedia beasiswa.', wrong: 'Telah tersedia bea siswa.', explanation: '"Beasiswa" ditulis serangkai karena sudah dianggap padu.' },
+                { correct: 'Harga sukarela.', wrong: 'Harga suka rela.', explanation: '"Sukarela" ditulis serangkai karena sudah dianggap padu.' },
+                { correct: 'Kami menghadap matahari.', wrong: 'Kami menghadap mata hari.', explanation: '"Matahari" ditulis serangkai karena sudah dianggap padu (tidak bermakna ' },
+                { correct: 'Ini adalah kacamata saya.', wrong: 'Ini adalah kaca mata saya.', explanation: '"Kacamata" ditulis serangkai karena sudah dianggap padu.' },
+                { correct: 'Kami tahu dari juru bicara.', wrong: 'Kami tahu dari jurubicara.', explanation: '"Juru bicara" ditulis terpisah karena merupakan kata majemuk jenis juru-.' },
+                { correct: 'Dia adalah seorang ahli waris.', wrong: 'Dia adalah seorang ahliwaris.', explanation: '"Ahli waris" ditulis terpisah sebagai kata majemuk jenis ahli-.' },
+                { correct: 'Dia membeli buku perihal nonfiksi.', wrong: 'Dia membeli buku perihal non fiksi.', explanation: 'Bentuk terikat "non-" ditulis serangkai.' },
+                { correct: 'Kami menyambut dengan suka cita.', wrong: 'Kami menyambut dengan sukacita.', explanation: '"Suka cita" ditulis terpisah sebagai kata majemuk.' },
+                { correct: 'Dia sering salah sangka.', wrong: 'Dia sering salahsangka.', explanation: '"Salah sangka" ditulis terpisah sebagai kata majemuk.' },
+                { correct: 'Surat itu dikirim melalui pos.', wrong: 'Surat itu di kirim melalui pos.', explanation: '"Dikirim" ditulis serangkai karena "di-" adalah imbuhan pasif.' },
+                { correct: 'Silakan duduk di ruang tamu.', wrong: 'Silahkan duduk di ruang tamu.', explanation: 'Kata baku yang benar adalah "silakan", bukan "silahkan".' },
+                { correct: 'Dia sudah lama berpacaran.', wrong: 'Dia sudah lama ber pacaran.', explanation: 'Imbuhan "ber-" ditulis serangkai.' },
+                { correct: 'Dia adalah tuna wisma.', wrong: 'Dia adalah tunawisma.', explanation: 'Bentuk terikat "tuna-" ditulis serangkai.' },
+                { correct: 'Pekerjaan itu tidak selesai.', wrong: 'Pekerjaan itu tidak selesai.', explanation: 'Bentuk terikat "tidak" selalu terpisah.' },
+                { correct: 'Dia pergi ke luar kota.', wrong: 'Dia pergi keluar kota.', explanation: '"Ke luar" ditulis terpisah karena "ke" adalah kata depan penunjuk arah.' },
+                { correct: 'Hati-hati saat menyeberang.', wrong: 'Hati hati saat menyeberang.', explanation: 'Kata ulang murni (hati-hati) menggunakan tanda hubung.' },
+                { correct: 'Dia mencari kambing hitam.', wrong: 'Dia mencari kambinghitam.', explanation: '"Kambing hitam" ditulis terpisah sebagai kata majemuk.' },
+                { correct: 'Kami merayakan Paskah.', wrong: 'Kami merayakan Pasca h.', explanation: 'Kesalahan penulisan kata "Paskah".' },
+                { correct: 'Janganlah berdiam diri.', wrong: 'Jangan lah berdiam diri.', explanation: 'Partikel "-lah" ditulis serangkai.' },
+                { correct: 'Keluarganya terdiri atas enam orang.', wrong: 'Keluarganya terdiri dari enam orang.', explanation: 'Preposisi yang tepat adalah "terdiri atas".' },
+                { correct: 'Tolong, siapa pun yang mendengar!', wrong: 'Tolong, siapapun yang mendengar!', explanation: 'Partikel "-pun" ditulis terpisah (kata dasar + partikel).' },
+
+                // 76-100: Bentuk Terikat (antar-, pasca-, pra-, dwi-) dan Kata Baku
+                { correct: 'Ini adalah peristiwa antarkota.', wrong: 'Ini adalah peristiwa antar kota.', explanation: 'Bentuk terikat "antar-" ditulis serangkai.' },
+                { correct: 'Dia membaca buku nonfiksi.', wrong: 'Dia membaca buku non fiksi.', explanation: 'Bentuk terikat "non-" ditulis serangkai.' },
+                { correct: 'Kami memasuki masa pascabencana.', wrong: 'Kami memasuki masa pasca bencana.', explanation: 'Bentuk terikat "pasca-" ditulis serangkai.' },
+                { correct: 'Rapat dilaksanakan secara prarapat.', wrong: 'Rapat dilaksanakan secara pra rapat.', explanation: 'Bentuk terikat "pra-" ditulis serangkai.' },
+                { correct: 'Dia adalah seorang tunawicara.', wrong: 'Dia adalah tuna wicara.', explanation: 'Bentuk terikat "tuna-" ditulis serangkai.' },
+                { correct: 'Kami melaksanakan dwimingguan.', wrong: 'Kami melaksanakan dwi mingguan.', explanation: 'Bentuk terikat "dwi-" ditulis serangkai.' },
+                { correct: 'Dia adalah seorang pahlawan.', wrong: 'Dia adalah seorang pahlawan.', explanation: 'Kata baku yang benar adalah "pahlawan".' },
+                { correct: 'Kami mengadakan kuis.', wrong: 'Kami mengadakan kuis.', explanation: 'Kata baku yang benar adalah "kuis", bukan "kwis".' },
+                { correct: 'Silakan ambil antrean.', wrong: 'Silahkan ambil antrian.', explanation: 'Kata baku yang benar adalah "antrean", bukan "antrian".' },
+                { correct: 'Dia memiliki jadwal praktik.', wrong: 'Dia memiliki jadwal praktek.', explanation: 'Kata baku yang benar adalah "praktik", bukan "praktek".' },
+                { correct: 'Dia memberikan nasihat.', wrong: 'Dia memberikan nasehat.', explanation: 'Kata baku yang benar adalah "nasihat", bukan "nasehat".' },
+                { correct: 'Kami memerlukan izin.', wrong: 'Kami memerlukan ijin.', explanation: 'Kata baku yang benar adalah "izin", bukan "ijin".' },
+                { correct: 'Perusahaan ini sudah stabil.', wrong: 'Perusahaan ini sudah setabil.', explanation: 'Kata baku yang benar adalah "stabil", bukan "setabil".' },
+                { correct: 'Dia mendapat sanksi.', wrong: 'Dia mendapat sangsi.', explanation: 'Kata baku yang benar adalah "sanksi", bukan "sangsi".' },
+                { correct: 'Kami pergi ke apotek.', wrong: 'Kami pergi ke apotik.', explanation: 'Kata baku yang benar adalah "apotek", bukan "apotik".' },
+                { correct: 'Dia memiliki motivasi tinggi.', wrong: 'Dia memiliki motovasi tinggi.', explanation: 'Kata baku yang benar adalah "motivasi".' },
+                { correct: 'Dia mengelak dari tuduhan.', wrong: 'Dia mengelak daripada tuduhan.', explanation: 'Preposisi yang tepat adalah "dari", bukan "daripada".' },
+                { correct: 'Rapat ini diadakan se-Jawa.', wrong: 'Rapat ini diadakan sejawa.', explanation: 'Bentuk terikat "se-" diikuti nama diri ditulis menggunakan tanda hubung.' },
+                { correct: 'Dia mencampuradukkan masalah.', wrong: 'Dia mencampur adukkan masalah.', explanation: 'Kata majemuk yang sudah padu dan berimbuhan ditulis serangkai.' },
+                { correct: 'Dia bertanggung jawab penuh.', wrong: 'Dia bertanggungjawab penuh.', explanation: '"Bertanggung jawab" ditulis terpisah.' },
+                { correct: 'Saya membeli di toko itu.', wrong: 'Saya membeli ditoko itu.', explanation: '"Di toko" ditulis terpisah karena "di" adalah kata depan tempat.' },
+                { correct: 'Dia bekerja sebagai karyawan.', wrong: 'Dia bekerja sebagai karywan.', explanation: 'Kata baku yang benar adalah "karyawan".' },
+                { correct: 'Kami bertemu Bapak Jokowi.', wrong: 'Kami bertemu Bapak jokowi.', explanation: 'Kesalahan penulisan nama orang.' },
+                { correct: 'Pascapanen ini gagal total.', wrong: 'Pasca panen ini gagal total.', explanation: 'Bentuk terikat "pasca-" ditulis serangkai.' },
+                { correct: 'Siapa pun yang ingin ikut, silakan.', wrong: 'Siapapun yang ingin ikut, silahkan.', explanation: '"Siapa pun" ditulis terpisah dan kata baku "silakan".' },
+            ],
+            kataBaku: [
+                // 1-25: Varian Huruf (e/i, o/u, f/p, z/j, ku/kw)
+                { correct: 'aktivitas', wrong: 'aktifitas', explanation: 'Bentuk baku menggunakan "v", bukan "f".' },
+                { correct: 'atlet', wrong: 'atlit', explanation: 'Bentuk baku menggunakan "e", bukan "i".' },
+                { correct: 'apotek', wrong: 'apotik', explanation: 'Bentuk baku menggunakan "e", bukan "i".' },
+                { correct: 'analisis', wrong: 'analisa', explanation: 'Bentuk baku kata benda menggunakan "-sis", bukan "-sa".' },
+                { correct: 'diagnosis', wrong: 'diagnosa', explanation: 'Bentuk baku kata benda menggunakan "-sis", bukan "-sa".' },
+                { correct: 'izin', wrong: 'ijin', explanation: 'Bentuk baku menggunakan "z", bukan "j".' },
+                { correct: 'risiko', wrong: 'resiko', explanation: 'Bentuk baku menggunakan "i", bukan "e".' },
+                { correct: 'zaman', wrong: 'jaman', explanation: 'Bentuk baku menggunakan "z", bukan "j".' },
+                { correct: 'fotokopi', wrong: 'photocopy', explanation: 'Bentuk baku menggunakan "f", bukan "ph".' },
+                { correct: 'kualitas', wrong: 'kwalitas', explanation: 'Bentuk baku menggunakan "ku", bukan "kw".' },
+                { correct: 'kuantitas', wrong: 'kwantitas', explanation: 'Bentuk baku menggunakan "ku", bukan "kw".' },
+                { correct: 'teknik', wrong: 'tehnik', explanation: 'Bentuk baku tanpa "h".' },
+                { correct: 'hierarki', wrong: 'hirarki', explanation: 'Bentuk baku menggunakan "ie".' },
+                { correct: 'nasihat', wrong: 'nasehat', explanation: 'Bentuk baku menggunakan "i", bukan "e".' },
+                { correct: 'nomor', wrong: 'nomer', explanation: 'Bentuk baku menggunakan "o", bukan "e".' },
+                { correct: 'silakan', wrong: 'silahkan', explanation: 'Bentuk baku tanpa "h".' },
+                { correct: 'sistem', wrong: 'sistim', explanation: 'Bentuk baku menggunakan "e", bukan "i".' },
+                { correct: 'andal', wrong: 'handal', explanation: 'Bentuk baku tanpa "h".' },
+                { correct: 'faksimili', wrong: 'faximile', explanation: 'Bentuk baku menggunakan "f" dan ejaan Indonesia.' },
+                { correct: 'lubang', wrong: 'lobang', explanation: 'Bentuk baku menggunakan "u", bukan "o".' },
+                { correct: 'ubah', wrong: 'robah', explanation: 'Bentuk baku tanpa "r" di awal.' },
+                { correct: 'objek', wrong: 'obyek', explanation: 'Bentuk baku menggunakan "j", bukan "y".' },
+                { correct: 'subjek', wrong: 'subyek', explanation: 'Bentuk baku menggunakan "j", bukan "y".' },
+                { correct: 'saraf', wrong: 'syaraf', explanation: 'Bentuk baku tanpa "y".' },
+                { correct: 'pascapanen', wrong: 'pasca panen', explanation: 'Bentuk terikat "pasca" ditulis serangkai.' },
+
+                // 26-50: Akhiran (-er, -or, -i, -e, -is, -us) dan Varian Tengah
+                { correct: 'praktik', wrong: 'praktek', explanation: 'Bentuk baku menggunakan "i", bukan "e".' },
+                { correct: 'konkret', wrong: 'kongkret', explanation: 'Bentuk baku tanpa "g".' },
+                { correct: 'definisi', wrong: 'defenisi', explanation: 'Bentuk baku menggunakan "i", bukan "e".' },
+                { correct: 'metode', wrong: 'metoda', explanation: 'Bentuk baku menggunakan "e" di akhir.' },
+                { correct: 'standar', wrong: 'standard', explanation: 'Bentuk baku tanpa "d" di akhir.' },
+                { correct: 'survei', wrong: 'survey', explanation: 'Bentuk baku menggunakan "ei", bukan "ey".' },
+                { correct: 'ekspor', wrong: 'eksport', explanation: 'Bentuk baku tanpa "t" di akhir.' },
+                { correct: 'kompleks', wrong: 'komplek', explanation: 'Bentuk baku menggunakan "s" di akhir.' },
+                { correct: 'sekretaris', wrong: 'sekertaris', explanation: 'Bentuk baku menggunakan "r" dan "e" di suku kata kedua.' },
+                { correct: 'atmosfer', wrong: 'atmosfir', explanation: 'Bentuk baku menggunakan "e", bukan "i".' },
+                { correct: 'esai', wrong: 'esei', explanation: 'Bentuk baku menggunakan "ai", bukan "ei".' },
+                { correct: 'hipotesis', wrong: 'hipotesa', explanation: 'Bentuk baku menggunakan "-sis", bukan "-sa".' },
+                { correct: 'kreativitas', wrong: 'kreatifitas', explanation: 'Bentuk baku menggunakan "v", bukan "f".' },
+                { correct: 'memublikasikan', wrong: 'mempublikasikan', explanation: 'Bentuk baku dari "publikasi" dengan imbuhan "me-".' },
+                { correct: 'sekadar', wrong: 'sekedar', explanation: 'Bentuk baku menggunakan "a", bukan "e".' },
+                { correct: 'saksama', wrong: 'seksama', explanation: 'Bentuk baku menggunakan "a", bukan "e".' },
+                { correct: 'keterampilan', wrong: 'ketrampilan', explanation: 'Bentuk baku menggunakan "er", bukan "r".' },
+                { correct: 'utang', wrong: 'hutang', explanation: 'Bentuk baku tanpa "h".' },
+                { correct: 'musala', wrong: 'mushola', explanation: 'Bentuk baku sesuai penyerapan.' },
+                { correct: 'kedaluwarsa', wrong: 'kadaluarsa', explanation: 'Bentuk baku menggunakan "e" dan "u", bukan "a" dan "a".' },
+                { correct: 'detail', wrong: 'detil', explanation: 'Bentuk baku menggunakan "ai", bukan "i".' },
+                { correct: 'ekstrem', wrong: 'ekstrim', explanation: 'Bentuk baku menggunakan "e", bukan "i".' },
+                { correct: 'narasumber', wrong: 'nara sumber', explanation: 'Bentuk baku serangkai.' },
+                { correct: 'interaktif', wrong: 'interaktip', explanation: 'Bentuk baku menggunakan "f", bukan "p".' },
+                { correct: 'akumulasi', wrong: 'akomulasi', explanation: 'Bentuk baku menggunakan "u", bukan "o".' },
+
+                // 51-75: Kata Keseharian, Ejaan Asing, dan Konsonan Ganda
+                { correct: 'antre', wrong: 'antri', explanation: 'Bentuk baku menggunakan "e", bukan "i".' },
+                { correct: 'ambulans', wrong: 'ambulan', explanation: 'Bentuk baku menggunakan "s" di akhir.' },
+                { correct: 'andal', wrong: 'handal', explanation: 'Bentuk baku tanpa "h".' },
+                { correct: 'berpikir', wrong: 'berfikir', explanation: 'Bentuk baku menggunakan "p", bukan "f".' },
+                { correct: 'bus', wrong: 'bis', explanation: 'Bentuk baku menggunakan "u", bukan "i".' },
+                { correct: 'cenderamata', wrong: 'cindera mata', explanation: 'Bentuk baku serangkai, menggunakan "e".' },
+                { correct: 'dolar', wrong: 'dollar', explanation: 'Bentuk baku konsonan tunggal.' },
+                { correct: 'efektif', wrong: 'efektip', explanation: 'Bentuk baku menggunakan "f", bukan "p".' },
+                { correct: 'esai', wrong: 'essay', explanation: 'Bentuk baku menggunakan "ai", bukan "ay".' },
+                { correct: 'gizi', wrong: 'giji', explanation: 'Bentuk baku menggunakan "z", bukan "j".' },
+                { correct: 'ideologi', wrong: 'idiologi', explanation: 'Bentuk baku menggunakan "e", bukan "i".' },
+                { correct: 'jenazah', wrong: 'jenasah', explanation: 'Bentuk baku menggunakan "z", bukan "s".' },
+                { correct: 'kuitansi', wrong: 'kwitansi', explanation: 'Bentuk baku menggunakan "u", bukan "w".' },
+                { correct: 'negeri', wrong: 'negri', explanation: 'Bentuk baku menggunakan "e", bukan tanpa "e".' },
+                { correct: 'paham', wrong: 'faham', explanation: 'Bentuk baku menggunakan "p", bukan "f".' },
+                { correct: 'pascapanen', wrong: 'pasca panen', explanation: 'Bentuk terikat "pasca" ditulis serangkai.' },
+                { correct: 'peduli', wrong: 'perduli', explanation: 'Bentuk baku tanpa "r".' },
+                { correct: 'permukiman', wrong: 'pemukiman', explanation: 'Bentuk baku dari "mukim" dengan imbuhan "per-an".' },
+                { correct: 'salat', wrong: 'sholat', explanation: 'Bentuk baku sesuai penyerapan.' },
+                { correct: 'sampel', wrong: 'sample', explanation: 'Bentuk baku menggunakan "e" di tengah.' },
+                { correct: 'seksama', wrong: 'saksama', explanation: 'Bentuk baku menggunakan "a" dan "a", bukan "e" dan "a".' },
+                { correct: 'terjemah', wrong: 'terjemaah', explanation: 'Bentuk baku tanpa konsonan ganda.' },
+                { correct: 'transportasi', wrong: 'transfortasi', explanation: 'Bentuk baku menggunakan "p", bukan "f".' },
+                { correct: 'zuhur', wrong: 'dhuhur', explanation: 'Bentuk baku sesuai penyerapan.' },
+                { correct: 'yudikatif', wrong: 'yudikatip', explanation: 'Bentuk baku menggunakan "f", bukan "p".' },
+
+                // 76-100: Kata Majemuk yang Padu, Imbuhan yang Sering Salah, dan Lain-lain
+                { correct: 'beasiswa', wrong: 'bea siswa', explanation: 'Bentuk baku serangkai.' },
+                { correct: 'sukarela', wrong: 'suka rela', explanation: 'Bentuk baku serangkai.' },
+                { correct: 'manajemen', wrong: 'managemen', explanation: 'Bentuk baku menggunakan "j", bukan "g".' },
+                { correct: 'administrasi', wrong: 'administrasi', explanation: 'Bentuk baku tanpa "n" ganda.' },
+                { correct: 'hierarki', wrong: 'hirarki', explanation: 'Bentuk baku menggunakan "ie".' },
+                { correct: 'atmosfer', wrong: 'atmosfir', explanation: 'Bentuk baku menggunakan "e", bukan "i".' },
+                { correct: 'asas', wrong: 'azas', explanation: 'Bentuk baku menggunakan "s", bukan "z".' },
+                { correct: 'hakikat', wrong: 'hakekat', explanation: 'Bentuk baku menggunakan "i", bukan "e".' },
+                { correct: 'kaidah', wrong: 'kaedah', explanation: 'Bentuk baku menggunakan "i", bukan "e".' },
+                { correct: 'jenderal', wrong: 'jendral', explanation: 'Bentuk baku menggunakan "e", bukan tanpa "e".' },
+                { correct: 'telantar', wrong: 'terlantar', explanation: 'Bentuk baku tanpa "r".' },
+                { correct: 'lembap', wrong: 'lembab', explanation: 'Bentuk baku menggunakan "p", bukan "b".' },
+                { correct: 'memengaruhi', wrong: 'mempengaruhi', explanation: 'Bentuk baku dari "pengaruh" dengan imbuhan "me-i".' },
+                { correct: 'merombak', wrong: 'merobak', explanation: 'Bentuk baku dengan "m-r" bukan "m-r".' },
+                { correct: 'mengubah', wrong: 'merubah', explanation: 'Bentuk baku dari "ubah" dengan imbuhan "me-".' },
+                { correct: 'memerlukan', wrong: 'membutuhkan', explanation: 'Lebih baku "memerlukan" daripada "membutuhkan" untuk kata benda.' },
+                { correct: 'terperdaya', wrong: 'terpedaya', explanation: 'Bentuk baku dari "perdaya" dengan imbuhan "ter-".' },
+                { correct: 'memerkosa', wrong: 'memperkosa', explanation: 'Bentuk baku dari "perkosa" dengan imbuhan "me-".' },
+                { correct: 'miliar', wrong: 'milyar', explanation: 'Bentuk baku menggunakan "i", bukan "y".' },
+                { correct: 'lubang', wrong: 'lobang', explanation: 'Bentuk baku menggunakan "u", bukan "o".' },
+                { correct: 'teoretis', wrong: 'teoritis', explanation: 'Bentuk baku menggunakan "e", bukan "i".' },
+                { correct: 'karier', wrong: 'karir', explanation: 'Bentuk baku menggunakan "ie", bukan "i".' },
+                { correct: 'risiko', wrong: 'resiko', explanation: 'Bentuk baku menggunakan "i", bukan "e".' },
+                { correct: 'sistem', wrong: 'sistim', explanation: 'Bentuk baku menggunakan "e", bukan "i".' },
+                { correct: 'sekadar', wrong: 'sekedar', explanation: 'Bentuk baku menggunakan "a", bukan "e".' },
+            ]
+        };
+
+        let correctCount = 0;
+        let wrongCount = 0;
+        let questionCount = 0;
+        let currentCorrectAnswer = '';
+        let currentExplanation = '';
+
+        function getSelectedCategories() {
+            const selected = [];
+            if (document.getElementById('cat1').checked) selected.push('tandaBaca');
+            if (document.getElementById('cat2').checked) selected.push('kapitalisasi');
+            if (document.getElementById('cat3').checked) selected.push('penulisanKata');
+            if (document.getElementById('cat4').checked) selected.push('kataBaku');
+            return selected.length > 0 ? selected : ['tandaBaca', 'kapitalisasi', 'penulisanKata', 'kataBaku'];
+        }
+
+        function updateStats() {
+            document.getElementById('correctScore').textContent = correctCount;
+            document.getElementById('wrongScore').textContent = wrongCount;
+            
+            const total = correctCount + wrongCount;
+            const accuracy = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+        }
+
+        function loadQuestion() {
+            questionCount++;
+            document.getElementById('questionNum').textContent = `SOAL #${questionCount}`;
+            
+            const categories = getSelectedCategories();
+            const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+            const categoryQuestions = questions[randomCategory];
+            const question = categoryQuestions[Math.floor(Math.random() * categoryQuestions.length)];
+            
+            const isSwapped = Math.random() > 0.5;
+            
+            if (isSwapped) {
+                document.getElementById('optionA').textContent = question.wrong;
+                document.getElementById('optionB').textContent = question.correct;
+                currentCorrectAnswer = 'B';
+            } else {
+                document.getElementById('optionA').textContent = question.correct;
+                document.getElementById('optionB').textContent = question.wrong;
+                currentCorrectAnswer = 'A';
+            }
+
+            currentExplanation = question.explanation;
+
+            document.getElementById('optionA').className = 'option-btn';
+            document.getElementById('optionB').className = 'option-btn';
+            document.getElementById('feedbackResult').textContent = '';
+            document.getElementById('feedbackExplanation').style.display = 'none';
+        }
+
+        function checkAnswer(selected) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+            const selectedBtn = document.getElementById(`option${selected}`);
+            const correctBtn = document.getElementById(`option${currentCorrectAnswer}`);
+            const selectedText = selectedBtn.textContent;
+            const feedbackResult = document.getElementById('feedbackResult');
+            const feedbackExplanation = document.getElementById('feedbackExplanation');
+            const explanationText = document.getElementById('explanationText');
+
+            if (selected === currentCorrectAnswer) {
+                selectedBtn.classList.add('correct');
+                correctCount++;
+                feedbackResult.innerHTML = `<strong style="color: #5a8051;">✓ Benar!</strong> Jawaban Anda sudah tepat.`;
+            } else {
+                selectedBtn.classList.add('wrong');
+                correctBtn.classList.add('correct');
+                wrongCount++;
+                feedbackResult.innerHTML = `<strong style="color: #a85858;">✗ Salah!</strong> Jawaban yang benar adalah opsi ${currentCorrectAnswer}.`;
+            }
+
+            explanationText.textContent = currentExplanation;
+            feedbackExplanation.style.display = 'block';
+            updateStats();
+
+            setTimeout(() => {
+                buttons.forEach(btn => btn.style.pointerEvents = 'auto');
+                loadQuestion();
+            }, 4500);
+        }
+
+        document.getElementById('optionA').addEventListener('click', () => checkAnswer('A'));
+        document.getElementById('optionB').addEventListener('click', () => checkAnswer('B'));
+
+        document.querySelectorAll('.category-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                loadQuestion();
+            });
+        });
+
+        loadQuestion();
+    </script>
+</body>
+</html>
